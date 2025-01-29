@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    platform: linux/arm64
+    image: postgres
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_DB=$POSTGRES_DATABASE
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "root", "-d", "${POSTGRES_DATABASE}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+      timeout: 5s
+
+  app:
+    depends_on:
+      - postgres
+    restart: on-failure
+    image: apartment-service
+    build: .
+    env_file: ./.env
+    ports:
+      - 8081:8080
+      - 5006:5005
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:postgresql://postgres:5432/${POSTGRES_DATABASE}",
+        "spring.datasource.username": "${POSTGRES_USER}",
+        "spring.datasource.password": "${POSTGRES_PASSWORD}",
+        "spring.jpa.hibernate.ddl-auto": "validate"
+      }'
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${DEBUG_PORT}"
