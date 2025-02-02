@@ -15,6 +15,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(config = MapperConfig.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccommodationMapper {
     @Mapping(source = "amenities", target = "amenities")
+    @Mapping(source = "accommodationType", target = "type")
     AccommodationResponseDto toDto(Accommodation accommodation);
 
     List<AccommodationResponseDto> toListDto(List<Accommodation> accommodations);
