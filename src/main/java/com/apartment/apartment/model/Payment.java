@@ -33,7 +33,7 @@ public class Payment {
     private Booking booking;
     @Column(nullable = false)
     private String url;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String sessionId;
     @Column(nullable = false)
     private BigDecimal amount;

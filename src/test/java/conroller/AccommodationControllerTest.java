@@ -98,6 +98,7 @@ public class AccommodationControllerTest {
         expected.setSize(requestDto.getSize())
             .setAvailability(requestDto.getAvailability())
             .setDailyRate(requestDto.getDailyRate())
+            .setType(requestDto.getType())
             .setAmenities(requestDto.getAmenities())
                 .setAddress(requestDto.getAddress());
 

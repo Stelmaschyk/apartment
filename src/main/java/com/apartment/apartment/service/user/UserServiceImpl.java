@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
+    @Transactional
     @Override
     public UserRoleResponseDto updateRoleByUserId(Long userId, UpdateRoleRequestDto requestDto) {
         User user = getUserById(userId);
@@ -57,6 +58,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDtoWithRoles(userRepository.save(user));
     }
 
+    @Transactional
     @Override
     public UserResponseDto updateUserInfoById(Long userId, UserUpdateRequestDto updateDto) {
         User user = getUserById(userId);

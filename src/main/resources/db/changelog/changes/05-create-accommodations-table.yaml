@@ -24,6 +24,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: accommodation_type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
                   name: size
                   type: varchar(255)
                   constraints:

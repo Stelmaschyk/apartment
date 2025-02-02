@@ -15,6 +15,7 @@ import com.apartment.apartment.repository.accommodation.AccommodationRepository;
 import com.apartment.apartment.repository.booking.BookingRepository;
 import com.apartment.apartment.repository.booking.BookingSpecificationBuilder;
 import com.apartment.apartment.repository.user.UserRepository;
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class BookingServiceImpl implements BookingService {
     private final AccommodationRepository accommodationRepository;
     private final BookingSpecificationBuilder bookingSpecificationBuilder;
 
+    @Transactional
     @Override
     public BookingResponseDto save(Long id, BookingRequestDto requestDto) {
         Booking booking = bookingMapper.toModel(requestDto);
@@ -58,6 +60,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingMapper.toDto(booking);
     }
 
+    @Transactional
     @Override
     public void update(Long id, BookingRequestDto bookingRequestDto) {
         Booking booking = getBookingById(id);
@@ -92,6 +95,7 @@ public class BookingServiceImpl implements BookingService {
             () -> new EntityNotFoundException("can't find booking by id: %d".formatted(id)));
     }
 
+    @Transactional
     @Override
     public List<Booking> expiredBookings() {
         List<Booking> expiredBookingList = bookingRepository.findAllByStatusNotInAndCheckOutDate(

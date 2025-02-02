@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -34,10 +33,8 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @NotNull
     @Column(nullable = false)
     private LocalDate checkInDate;
-    @NotNull
     @Column(nullable = false)
     private LocalDate checkOutDate;
     @OneToOne(fetch = FetchType.LAZY, optional = false)

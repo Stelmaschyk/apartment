@@ -20,6 +20,7 @@ public interface AccommodationMapper {
     List<AccommodationResponseDto> toListDto(List<Accommodation> accommodations);
 
     @Mapping(source = "amenities", target = "amenities")
+    @Mapping(source = "type", target = "accommodationType")
     Accommodation toModel(AccommodationRequestDto requestDto);
 
     @Mapping(source = "amenities", target = "amenities")

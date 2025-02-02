@@ -13,6 +13,7 @@ import com.apartment.apartment.dto.user.UserRegistrationRequestDto;
 import com.apartment.apartment.dto.user.UserResponseDto;
 import com.apartment.apartment.dto.user.UserRoleResponseDto;
 import com.apartment.apartment.dto.user.UserUpdateRequestDto;
+import com.apartment.apartment.model.Accommodation;
 import com.apartment.apartment.model.Address;
 import com.apartment.apartment.model.Booking;
 import java.math.BigDecimal;
@@ -34,6 +35,7 @@ public final class TestDataProvider {
         return new AccommodationRequestDto()
             .setDailyRate(BigDecimal.valueOf(100.0))
             .setAvailability(5)
+            .setType(Accommodation.AccommodationType.HOUSE)
             .setSize("Large")
             .setAddress(address)
             .setAmenities(amenities);
@@ -51,6 +53,7 @@ public final class TestDataProvider {
         return new AccommodationRequestDto()
             .setDailyRate(BigDecimal.valueOf(100.0))
             .setAvailability(5)
+            .setType(Accommodation.AccommodationType.HOUSE)
             .setSize("Large")
             .setAddress(address)
             .setAmenities(amenities);

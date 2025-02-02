@@ -34,6 +34,7 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: true
+                    unique: true
               - column:
                   name: amount
                   type: decimal(10, 2)

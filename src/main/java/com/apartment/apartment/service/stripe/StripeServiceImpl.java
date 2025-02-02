@@ -95,7 +95,7 @@ public class StripeServiceImpl {
 
         private static String getAccommodationName(Booking booking) {
             return "Booking %s"
-                .formatted(booking.getAccommodation().getAccommodationTypeName());
+                .formatted(booking.getAccommodation().getAccommodationType());
 
         }
 

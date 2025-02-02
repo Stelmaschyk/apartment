@@ -6,6 +6,7 @@ import com.apartment.apartment.exception.EntityNotFoundException;
 import com.apartment.apartment.mapper.AccommodationMapper;
 import com.apartment.apartment.model.Accommodation;
 import com.apartment.apartment.repository.accommodation.AccommodationRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ public class AccommodationServiceImpl implements AccommodationService {
     private final AccommodationRepository accommodationRepository;
     private final AccommodationMapper accommodationMapper;
 
+    @Transactional
     @Override
     public AccommodationResponseDto save(AccommodationRequestDto requestDto) {
         Accommodation accommodation = accommodationMapper.toModel(requestDto);
@@ -35,6 +37,7 @@ public class AccommodationServiceImpl implements AccommodationService {
         return accommodationMapper.toListDto(accommodationDtos);
     }
 
+    @Transactional
     @Override
     public AccommodationResponseDto update(Long id, AccommodationRequestDto updateDto) {
         Accommodation accommodation = findAccommodationById(id);
