@@ -15,7 +15,6 @@ import com.apartment.apartment.repository.accommodation.AccommodationRepository;
 import com.apartment.apartment.repository.booking.BookingRepository;
 import com.apartment.apartment.repository.booking.BookingSpecificationBuilder;
 import com.apartment.apartment.repository.user.UserRepository;
-import com.apartment.apartment.service.telegram.TelegramNotificationService;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,6 @@ public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
     private final AccommodationRepository accommodationRepository;
     private final BookingSpecificationBuilder bookingSpecificationBuilder;
-    private final TelegramNotificationService telegramNotificationService;
 
     @Override
     public BookingResponseDto save(Long id, BookingRequestDto requestDto) {
@@ -43,7 +41,6 @@ public class BookingServiceImpl implements BookingService {
         booking.setUser(user);
         booking.setStatus(Booking.BookingStatus.PENDING);
         Booking savedBooking = bookingRepository.save(booking);
-        telegramNotificationService.notifyAboutNewBookingToAdmins(booking);
         return bookingMapper.toDto(savedBooking);
     }
 
@@ -89,7 +86,8 @@ public class BookingServiceImpl implements BookingService {
             () -> new EntityNotFoundException("can't find accommodation by id: %d".formatted(id)));
     }
 
-    private Booking getBookingById(Long id) {
+    @Override
+    public Booking getBookingById(Long id) {
         return bookingRepository.findById(id).orElseThrow(
             () -> new EntityNotFoundException("can't find booking by id: %d".formatted(id)));
     }

@@ -15,7 +15,6 @@ import com.apartment.apartment.model.Payment;
 import com.apartment.apartment.repository.booking.BookingRepository;
 import com.apartment.apartment.repository.payment.PaymentRepository;
 import com.apartment.apartment.service.stripe.StripeServiceImpl;
-import com.apartment.apartment.service.telegram.TelegramNotificationService;
 import com.stripe.model.checkout.Session;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -29,7 +28,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final StripeServiceImpl stripeService;
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
-    private final TelegramNotificationService telegramNotificationService;
 
     @Override
     @Transactional
@@ -69,7 +67,6 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(PAID);
         payment.getBooking()
                 .setStatus(Booking.BookingStatus.CONFIRMED);
-        telegramNotificationService.notifyAboutPaymentToAdmins(payment);
         return paymentMapper.toPaymentInfoDto(payment);
     }
 
@@ -81,4 +78,12 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(CANCELED);
         return paymentMapper.toCancelDto(paymentRepository.save(payment));
     }
+
+    @Override
+    public Payment getPaymentBySessionId(String sessionId) {
+        return paymentRepository.findBySessionId(sessionId).orElseThrow(
+            () -> new EntityNotFoundException(
+                "Wasn't found payment with session id '%s'".formatted(sessionId)));
+    }
+
 }

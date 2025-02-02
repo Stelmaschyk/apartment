@@ -5,6 +5,7 @@ import com.apartment.apartment.dto.booking.BookingResponseDto;
 import com.apartment.apartment.dto.booking.BookingSearchParametersDto;
 import com.apartment.apartment.model.User;
 import com.apartment.apartment.service.booking.BookingService;
+import com.apartment.apartment.service.telegram.TelegramNotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -29,13 +30,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
+    private final TelegramNotificationService telegramNotificationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create booking after authentication")
     public BookingResponseDto createBooking(@AuthenticationPrincipal User user,
                                             @RequestBody BookingRequestDto requestDto) {
-        return bookingService.save(user.getId(), requestDto);
+        BookingResponseDto responseDto = bookingService.save(user.getId(), requestDto);
+        telegramNotificationService.notifyAboutNewBookingToAdmins(
+                bookingService.getBookingById(responseDto.getBookingId()));
+        return responseDto;
     }
 
     @GetMapping("/me")

@@ -6,6 +6,7 @@ import com.apartment.apartment.dto.payment.PaymentResponseDto;
 import com.apartment.apartment.dto.payment.PaymentResponseDtoWithoutSession;
 import com.apartment.apartment.model.User;
 import com.apartment.apartment.service.payment.PaymentService;
+import com.apartment.apartment.service.telegram.TelegramNotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PaymentController {
     private final PaymentService paymentService;
+    private final TelegramNotificationService telegramNotificationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +57,10 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.OK)
     public PaymentResponseDtoWithoutSession completePayment(
             @RequestParam(name = "session_id") String sessionId) {
-        return paymentService.confirmPayment(sessionId);
+        PaymentResponseDtoWithoutSession response = paymentService.confirmPayment(sessionId);
+        telegramNotificationService.notifyAboutPaymentToAdmins(
+                paymentService.getPaymentBySessionId(sessionId));
+        return response;
     }
 
     @GetMapping("/cancel")

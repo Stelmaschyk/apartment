@@ -12,4 +12,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     @EntityGraph(attributePaths = "booking")
     Optional<Payment> findBySessionIdAndStatusIs(String sessionId,
                                                  Payment.PaymentStatus status);
+
+    Optional<Payment> findBySessionId(String sessionId);
 }
