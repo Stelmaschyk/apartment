@@ -19,12 +19,14 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter
 @Setter
 @Table(name = "accommodations")
 @Entity
 @RequiredArgsConstructor
+@Accessors(chain = true)
 public class Accommodation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

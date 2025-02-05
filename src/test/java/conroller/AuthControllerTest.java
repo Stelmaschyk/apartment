@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import util.TestDataProvider;
+import util.TestControllerDataProvider;
 
 @SpringBootTest(classes = ApartmentApplication.class)
 public class AuthControllerTest {
@@ -76,7 +76,7 @@ public class AuthControllerTest {
     @Test
     public void registerUser_ValidRegistrationDto_Success() throws Exception {
         UserRegistrationRequestDto requestDto =
-                TestDataProvider.createValidRegistrationRequestDto();
+                TestControllerDataProvider.createValidRegistrationRequestDto();
 
         MvcResult result = mockMvc.perform(post("/auth/register")
                 .content(objectMapper.writeValueAsString(requestDto))

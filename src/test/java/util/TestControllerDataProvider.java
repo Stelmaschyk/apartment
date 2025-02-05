@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public final class TestDataProvider {
+public final class TestControllerDataProvider {
     public static AccommodationRequestDto createValidAccommodationRequestDto() {
         Address address = new Address()
                 .setCountry("Ukraine")

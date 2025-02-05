@@ -43,7 +43,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import util.TestDataProvider;
+import util.TestControllerDataProvider;
 
 @SpringBootTest(classes = ApartmentApplication.class)
 public class BookingControllerTest {
@@ -111,8 +111,8 @@ public class BookingControllerTest {
     @Sql(scripts = "classpath:databases/bookings/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBooking_validBookingRequestDto_success() throws Exception {
-        BookingRequestDto requestDto = TestDataProvider.createValidBookingRequestDto();
-        BookingResponseDto expected = TestDataProvider.createValidBookingResponseDto();
+        BookingRequestDto requestDto = TestControllerDataProvider.createValidBookingRequestDto();
+        BookingResponseDto expected = TestControllerDataProvider.createValidBookingResponseDto();
 
         when(bookingService.save(eq(TEST_USER_ID), any(BookingRequestDto.class)))
                 .thenReturn(expected);
@@ -189,7 +189,7 @@ public class BookingControllerTest {
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void searchBookings_BookingSearchParametersDto_ReturnListBookingResponseDto() throws Exception {
         BookingSearchParametersDto params =
-                TestDataProvider.createValidBookingSearchParametersDto();
+                TestControllerDataProvider.createValidBookingSearchParametersDto();
 
         MvcResult result = mockMvc.perform(get("/bookings/search")
                 .content(objectMapper.writeValueAsString(params))
@@ -216,8 +216,8 @@ public class BookingControllerTest {
     @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBookingById_validBookingRequestDto_success() throws Exception {
-        BookingRequestDto requestDto = TestDataProvider.createValidUpdatedBookingRequestDto();
-        BookingResponseDto expected = TestDataProvider.createUpdatedBookingResponseDto();
+        BookingRequestDto requestDto = TestControllerDataProvider.createValidUpdatedBookingRequestDto();
+        BookingResponseDto expected = TestControllerDataProvider.createUpdatedBookingResponseDto();
 
         mockMvc.perform(put("/bookings/{id}", 2L)
                 .content(objectMapper.writeValueAsString(requestDto))

@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import util.TestDataProvider;
+import util.TestControllerDataProvider;
 
 @SpringBootTest(classes = ApartmentApplication.class)
 public class UserControllerTest {
@@ -92,7 +92,7 @@ public class UserControllerTest {
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
     void getInformationWithLoginedUser_withAuthenticatedUser_getUserResponseDto() throws Exception {
-        UserResponseDto expected = TestDataProvider.createValidUserResponseDto();
+        UserResponseDto expected = TestControllerDataProvider.createValidUserResponseDto();
 
         MvcResult result = mockMvc.perform(get("/users/me", TEST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -110,8 +110,8 @@ public class UserControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateRoleById_withAuthenticatedAdminUser_updateRoleResponseDto() throws Exception {
-        UpdateRoleRequestDto requestDto = TestDataProvider.createValidUpdateRoleRequestDto();
-        UserRoleResponseDto expected = TestDataProvider.createValidUserRolesResponseDto();
+        UpdateRoleRequestDto requestDto = TestControllerDataProvider.createValidUpdateRoleRequestDto();
+        UserRoleResponseDto expected = TestControllerDataProvider.createValidUserRolesResponseDto();
 
         MvcResult result = mockMvc.perform(put("/users/{id}/role", TEST_USER_ID)
                 .content(objectMapper.writeValueAsString(requestDto))
@@ -130,7 +130,7 @@ public class UserControllerTest {
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
     void updateUserInfo_withAuthenticatedUser_updateUserInfoResponseDto() throws Exception {
-        UserUpdateRequestDto requestDto = TestDataProvider.createValidUserUpdateRequestDto();
+        UserUpdateRequestDto requestDto = TestControllerDataProvider.createValidUserUpdateRequestDto();
 
         MvcResult result = mockMvc.perform(patch("/users/me", TEST_USER_ID)
                 .content(objectMapper.writeValueAsString(requestDto))

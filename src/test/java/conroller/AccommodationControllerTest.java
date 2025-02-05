@@ -37,7 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import util.TestDataProvider;
+import util.TestControllerDataProvider;
 
 @SpringBootTest(classes = ApartmentApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -92,7 +92,7 @@ public class AccommodationControllerTest {
     @DisplayName("Create a new accommodation")
     @Order(1)
     void createAccommodation_ValidRequestDto_Success() throws Exception {
-        AccommodationRequestDto requestDto = TestDataProvider.createValidAccommodationRequestDto();
+        AccommodationRequestDto requestDto = TestControllerDataProvider.createValidAccommodationRequestDto();
 
         AccommodationRequestDto expected = new AccommodationRequestDto();
         expected.setSize(requestDto.getSize())
@@ -166,7 +166,7 @@ public class AccommodationControllerTest {
     @Order(4)
     void updateAccommodation_ValidRequestDto_Success() throws Exception {
         AccommodationRequestDto updatedRequestDto =
-                TestDataProvider.updatedValidAccommodationRequestDto(TEST_ID);
+                TestControllerDataProvider.updatedValidAccommodationRequestDto(TEST_ID);
         MvcResult result = mockMvc.perform(put("/accommodations/{id}", TEST_ID)
                 .content(objectMapper.writeValueAsString(updatedRequestDto))
                 .contentType(MediaType.APPLICATION_JSON))

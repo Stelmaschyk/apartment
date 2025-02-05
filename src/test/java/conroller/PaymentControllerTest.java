@@ -45,7 +45,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import util.TestDataProvider;
+import util.TestControllerDataProvider;
 
 @SpringBootTest(classes = ApartmentApplication.class)
 public class PaymentControllerTest {
@@ -133,8 +133,8 @@ public class PaymentControllerTest {
         mockSession.setUrl(TEST_URL);
         when(stripeService.createSession(any(Payment.class), any(Booking.class)))
                 .thenReturn(mockSession);
-        PaymentRequestDto requestDto = TestDataProvider.createValidPaymentRequestDto();
-        PaymentResponseDto expected = TestDataProvider.createValidPaymentResponseDto();
+        PaymentRequestDto requestDto = TestControllerDataProvider.createValidPaymentRequestDto();
+        PaymentResponseDto expected = TestControllerDataProvider.createValidPaymentResponseDto();
         MvcResult result = mockMvc.perform(post("/payments")
                 .content(objectMapper.writeValueAsString(requestDto))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -232,7 +232,7 @@ public class PaymentControllerTest {
     @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void cancelPayment_withValidSessionId_returnsCancelPaymentResponseDto() throws Exception {
-        CancelPaymentResponseDto expected = TestDataProvider.createValidCancelPaymentResponseDto();
+        CancelPaymentResponseDto expected = TestControllerDataProvider.createValidCancelPaymentResponseDto();
 
         MvcResult result = mockMvc.perform(get("/payments/cancel")
                 .param("session_id", TEST_SESSION_ID)
