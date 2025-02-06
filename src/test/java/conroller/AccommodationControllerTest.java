@@ -61,8 +61,9 @@ public class AccommodationControllerTest {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(
                     connection,
-                        new ClassPathResource(
-                        "databases/accommodations/add-accommodations-to-accommodations-table.sql")
+                new ClassPathResource(
+                    "databases/accommodations/controller/add-accommodations-to-accommodations"
+                        + "-table.sql")
 
             );
         }
@@ -92,7 +93,8 @@ public class AccommodationControllerTest {
     @DisplayName("Create a new accommodation")
     @Order(1)
     void createAccommodation_ValidRequestDto_Success() throws Exception {
-        AccommodationRequestDto requestDto = TestControllerDataProvider.createValidAccommodationRequestDto();
+        AccommodationRequestDto requestDto =
+                TestControllerDataProvider.createValidAccommodationRequestDto();
 
         AccommodationRequestDto expected = new AccommodationRequestDto();
         expected.setSize(requestDto.getSize())

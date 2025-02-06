@@ -49,36 +49,24 @@ The system is developed with the Spring Boot framework, adhering to the MVC arch
 
 1. ⚙️ ***Tables structure:***
 
-<img src="./src/main/resources/images/apartment_tables.jpg">
+<img src="./src/main/resources/images/accommodation_uml.jpg">
 
 2. ⚙️ ***User:*** Stores information about the registered user, including their authentication data. Logging by email, 
    password.
-
-<img src="./src/main/resources/images/apartment_user.jpg">
  
 3. ⚙️ ***Role:*** Displays the roles assigned to users to manage their access and permissions in the system. By 
 default, the USER role is assigned.
 
-<img src="./src/main/resources/images/apartment_roles.jpg">
-
 4. ⚙️ ***Accommodation:*** Represents the available accommodations.
 5. ⚙️ ***Location:*** Displays the geographical location of the property (street and building number, city, country).
 
-<img src="./src/main/resources/images/apartment_accommodation.jpg">
-
 6. ⚙️ ***Amenity:*** Displays features or amenities available in the property (fireplace, pool, wi-fi).
-
-<img src="./src/main/resources/images/apartment_accommodation_amenities.jpg">
 
 7. ⚙️ ***Booking:*** Displays the reservation made by the user for the property, the date of check-in and 
    check-out. 
    It also assigns a status, which changes upon successful booking.
 
-<img src="./src/main/resources/images/apartment_booking.jpg">
-
 8. ⚙️ ***Payment:*** Displays the payment details for the reservation
-
-<img src="./src/main/resources/images/apartment_payment.jpg">
 
 ## ⚙️ Installation
 ***

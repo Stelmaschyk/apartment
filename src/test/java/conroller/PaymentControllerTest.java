@@ -79,27 +79,28 @@ public class PaymentControllerTest {
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/user/add-user-to-tables-users.sql")
+                    "databases/user/controller/add-user-to-tables-users.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/accommodations/add-accommodations-to-accommodations-table.sql")
+                    "databases/accommodations/controller/add-accommodations-to-accommodations"
+                        + "-table.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/bookings/add-booking-to-bookings-table.sql")
+                    "databases/bookings/controller/add-booking-to-bookings-table.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/roles/add-roles.sql")
+                    "databases/roles/controller/add-roles.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/user/add-roles-to users-to-users-roles-table.sql")
+                    "databases/user/controller/add-roles-to users-to-users-roles-table.sql")
             );
         }
     }
@@ -125,7 +126,7 @@ public class PaymentControllerTest {
 
     @Test
     @WithUserDetails(value = TEST_USER_EMAIL)
-    @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createPayment_withValidRequest_returnsPaymentResponseDto() throws Exception {
         Session mockSession = new Session();
@@ -156,7 +157,7 @@ public class PaymentControllerTest {
 
     @Test
     @WithMockUser(username = "user")
-    @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createPayment_withInvalidBookingId_returnsBadRequest() throws Exception {
         PaymentRequestDto requestDto = new PaymentRequestDto(-1L);
@@ -169,7 +170,7 @@ public class PaymentControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    @Sql (scripts = "classpath:databases/payments/add-payment-to-payments-table.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/add-payment-to-payments-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void getAllByUserId_withValidUserId_returnsListOfPayments() throws Exception {
         MvcResult result = mockMvc.perform(get("/payments")
@@ -180,7 +181,8 @@ public class PaymentControllerTest {
 
         List<PaymentResponseDtoWithoutSession> actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
-            new TypeReference<>() {}
+            new TypeReference<>() {
+            }
         );
 
         AssertionsForInterfaceTypes.assertThat(actual)
@@ -191,9 +193,9 @@ public class PaymentControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @WithUserDetails(value = TEST_USER_EMAIL)
-    @Sql (scripts = "classpath:databases/payments/add-payment-to-payments-table.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/add-payment-to-payments-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllByUserId_withInvalidUserId_returnsEmptyList() throws Exception {
         MvcResult result = mockMvc.perform(get("/payments")
@@ -204,7 +206,8 @@ public class PaymentControllerTest {
 
         List<PaymentResponseDtoWithoutSession> actual = objectMapper.readValue(
                 result.getResponse().getContentAsString(),
-            new TypeReference<>() {}
+            new TypeReference<>() {
+            }
         );
 
         AssertionsForInterfaceTypes.assertThat(actual).isEmpty();
@@ -212,27 +215,28 @@ public class PaymentControllerTest {
 
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
-    @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/payments/add-payment-to-payments-table.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/add-payment-to-payments-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void confirmPayment_withUnpaidSession_throwsPaymentException() {
 
         when(stripeService.isSessionPaid(TEST_SESSION_ID)).thenReturn(false);
 
         assertThatThrownBy(() -> paymentService.confirmPayment(TEST_SESSION_ID))
-                .isInstanceOf(PaymentException.class)
+            .isInstanceOf(PaymentException.class)
                 .hasMessage("Unpaid session found");
     }
 
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
-    @Sql (scripts = "classpath:databases/payments/add-payment-to-payments-table.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/add-payment-to-payments-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/payments/delete-from-payments.sql",
+    @Sql(scripts = "classpath:databases/payments/controller/delete-from-payments.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void cancelPayment_withValidSessionId_returnsCancelPaymentResponseDto() throws Exception {
-        CancelPaymentResponseDto expected = TestControllerDataProvider.createValidCancelPaymentResponseDto();
+        CancelPaymentResponseDto expected =
+                TestControllerDataProvider.createValidCancelPaymentResponseDto();
 
         MvcResult result = mockMvc.perform(get("/payments/cancel")
                 .param("session_id", TEST_SESSION_ID)
@@ -249,8 +253,8 @@ public class PaymentControllerTest {
                 .isEqualTo(expected.bookingId());
 
         assertThat(actual)
-                .usingRecursiveComparison()
-                .comparingOnlyFields("status")
+            .usingRecursiveComparison()
+            .comparingOnlyFields("status")
                 .isEqualTo(expected);
     }
 }

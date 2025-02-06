@@ -55,17 +55,17 @@ public class UserControllerTest {
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/roles/add-roles.sql")
+                    "databases/roles/controller/add-roles.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/user/add-user-to-tables-users.sql")
+                    "databases/user/controller/add-user-to-tables-users.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/user/add-roles-to users-to-users-roles-table.sql")
+                    "databases/user/controller/add-roles-to users-to-users-roles-table.sql")
             );
         }
     }
@@ -110,7 +110,8 @@ public class UserControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateRoleById_withAuthenticatedAdminUser_updateRoleResponseDto() throws Exception {
-        UpdateRoleRequestDto requestDto = TestControllerDataProvider.createValidUpdateRoleRequestDto();
+        UpdateRoleRequestDto requestDto =
+                TestControllerDataProvider.createValidUpdateRoleRequestDto();
         UserRoleResponseDto expected = TestControllerDataProvider.createValidUserRolesResponseDto();
 
         MvcResult result = mockMvc.perform(put("/users/{id}/role", TEST_USER_ID)
@@ -130,7 +131,8 @@ public class UserControllerTest {
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
     void updateUserInfo_withAuthenticatedUser_updateUserInfoResponseDto() throws Exception {
-        UserUpdateRequestDto requestDto = TestControllerDataProvider.createValidUserUpdateRequestDto();
+        UserUpdateRequestDto requestDto =
+                TestControllerDataProvider.createValidUserUpdateRequestDto();
 
         MvcResult result = mockMvc.perform(patch("/users/me", TEST_USER_ID)
                 .content(objectMapper.writeValueAsString(requestDto))

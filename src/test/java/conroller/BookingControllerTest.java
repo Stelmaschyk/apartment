@@ -72,17 +72,18 @@ public class BookingControllerTest {
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/roles/add-roles.sql")
+                    "databases/roles/controller/add-roles.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/accommodations/add-accommodations-to-accommodations-table.sql")
+                    "databases/accommodations/controller/"
+                        + "add-accommodations-to-accommodations-table.sql")
             );
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/user/add-user-to-tables-users.sql")
+                    "databases/user/controller/add-user-to-tables-users.sql")
             );
         }
     }
@@ -108,7 +109,7 @@ public class BookingControllerTest {
 
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
-    @Sql(scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql(scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBooking_validBookingRequestDto_success() throws Exception {
         BookingRequestDto requestDto = TestControllerDataProvider.createValidBookingRequestDto();
@@ -138,9 +139,9 @@ public class BookingControllerTest {
 
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
-    @Sql (scripts = "classpath:databases/bookings/add-booking-to-bookings-table.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/add-booking-to-bookings-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookingById_validBookingRequestDto_success() throws Exception {
         MvcResult result = mockMvc.perform(get("/bookings/{id}", TEST_BOOKING_ID)
@@ -158,9 +159,9 @@ public class BookingControllerTest {
 
     @WithUserDetails(value = TEST_USER_EMAIL)
     @Test
-    @Sql (scripts = "classpath:databases/bookings/add-booking-to-bookings-table.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/add-booking-to-bookings-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getBookingsList_validUserId_retrieveListOfBookingResponseDto() throws Exception {
 
@@ -183,9 +184,9 @@ public class BookingControllerTest {
     @WithMockUser(username = "user")
     @Test
     @DisplayName("search booking by parameters user_id or status")
-    @Sql (scripts = "classpath:databases/bookings/add-booking-to-bookings-table.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/add-booking-to-bookings-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void searchBookings_BookingSearchParametersDto_ReturnListBookingResponseDto() throws Exception {
         BookingSearchParametersDto params =
@@ -211,13 +212,15 @@ public class BookingControllerTest {
     @Test
     @WithMockUser(username = "user")
     @DisplayName("update booking by booking_id")
-    @Sql (scripts = "classpath:databases/bookings/add-booking-to-bookings-table.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/add-booking-to-bookings-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBookingById_validBookingRequestDto_success() throws Exception {
-        BookingRequestDto requestDto = TestControllerDataProvider.createValidUpdatedBookingRequestDto();
-        BookingResponseDto expected = TestControllerDataProvider.createUpdatedBookingResponseDto();
+        BookingRequestDto requestDto =
+                TestControllerDataProvider.createValidUpdatedBookingRequestDto();
+        BookingResponseDto expected =
+                TestControllerDataProvider.createUpdatedBookingResponseDto();
 
         mockMvc.perform(put("/bookings/{id}", 2L)
                 .content(objectMapper.writeValueAsString(requestDto))
@@ -243,9 +246,9 @@ public class BookingControllerTest {
     @WithMockUser(username = "user")
     @Test
     @DisplayName("delete booking by id")
-    @Sql (scripts = "classpath:databases/bookings/add-booking-to-bookings-table.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/add-booking-to-bookings-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql (scripts = "classpath:databases/bookings/delete-from-bookings.sql",
+    @Sql (scripts = "classpath:databases/bookings/controller/delete-from-bookings.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteById_WithValidBookId_Success() throws Exception {
         mockMvc.perform(delete("/bookings/{id}", TEST_BOOKING_ID)

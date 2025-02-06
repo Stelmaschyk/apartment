@@ -48,7 +48,7 @@ public class AuthControllerTest {
             ScriptUtils.executeSqlScript(
                     connection,
                 new ClassPathResource(
-                    "databases/roles/add-roles.sql")
+                    "databases/roles/controller/add-roles.sql")
             );
         }
     }

@@ -14,7 +14,6 @@ import com.apartment.apartment.mapper.AccommodationMapper;
 import com.apartment.apartment.model.Accommodation;
 import com.apartment.apartment.model.Address;
 import com.apartment.apartment.repository.accommodation.AccommodationRepository;
-import com.apartment.apartment.service.accommodation.AccommodationService;
 import com.apartment.apartment.service.accommodation.AccommodationServiceImpl;
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,16 +48,16 @@ public class AccommodationServiceTest {
     @BeforeAll
     static void setup() {
         Address address = new Address()
-            .setCountry("Germany")
-            .setCity("Berlin")
-            .setStreet("Main Street")
-            .setBuildNumber(10);
+                .setCountry("Germany")
+                .setCity("Berlin")
+                .setStreet("Main Street")
+                .setBuildNumber(10);
 
         Address updatedAddress = new Address()
-            .setCountry("Germany")
-            .setCity("Hamburg")
-            .setStreet("Updated Street")
-            .setBuildNumber(20);
+                .setCountry("Germany")
+                .setCity("Hamburg")
+                .setStreet("Updated Street")
+                .setBuildNumber(20);
 
         List<String> amenities = List.of("WiFi", "TV", "Parking");
         List<String> updatedAmenities = List.of("WiFi", "TV", "Parking", "Pool");
@@ -125,7 +124,7 @@ public class AccommodationServiceTest {
         AccommodationResponseDto result = accommodationService.save(requestDto);
 
         assertThat(result)
-            .isEqualTo(responseDto);
+                .isEqualTo(responseDto);
 
         verify(accommodationRepository).save(accommodation);
         verify(accommodationMapper).toModel(requestDto);
@@ -135,7 +134,7 @@ public class AccommodationServiceTest {
     @Test
     void findById_shouldReturnAccommodationResponseDto() {
         when(accommodationRepository.findById(TEST_ACCOMMODATION_ID))
-            .thenReturn(Optional.of(accommodation));
+                .thenReturn(Optional.of(accommodation));
         when(accommodationMapper.toDto(accommodation)).thenReturn(responseDto);
 
         AccommodationResponseDto result = accommodationService.findById(TEST_ACCOMMODATION_ID);
@@ -150,7 +149,7 @@ public class AccommodationServiceTest {
         when(accommodationRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class,
-            () -> accommodationService.findById(TEST_ACCOMMODATION_ID));
+                () -> accommodationService.findById(TEST_ACCOMMODATION_ID));
 
         verify(accommodationRepository).findById(1L);
     }
@@ -165,7 +164,7 @@ public class AccommodationServiceTest {
         when(accommodationMapper.toListDto(accommodations)).thenReturn(responseDtos);
 
         List<AccommodationResponseDto> result =
-            accommodationService.findAllAccommodations(pageable);
+                accommodationService.findAllAccommodations(pageable);
 
         assertThat(result).isEqualTo(responseDtos);
         verify(accommodationRepository).findAll(pageable);
@@ -175,16 +174,16 @@ public class AccommodationServiceTest {
     @Test
     void update_shouldReturnUpdatedAccommodationResponseDto() {
         when(accommodationRepository.findById(TEST_ACCOMMODATION_ID))
-            .thenReturn(Optional.of(accommodation));
+                .thenReturn(Optional.of(accommodation));
         doNothing().when(accommodationMapper)
             .updateAccommodationFromDto(updatedRequestDto, accommodation);
         when(accommodationMapper.toAddressDto(updatedRequestDto.getAddress()))
-            .thenReturn(new AddressDto());
+                .thenReturn(new AddressDto());
         when(accommodationRepository.save(accommodation)).thenReturn(updatedAccommodation);
         when(accommodationMapper.toDto(updatedAccommodation)).thenReturn(updatedResponseDto);
 
         AccommodationResponseDto result =
-            accommodationService.update(TEST_ACCOMMODATION_ID, updatedRequestDto);
+                accommodationService.update(TEST_ACCOMMODATION_ID, updatedRequestDto);
 
         assertThat(result).isEqualTo(updatedResponseDto);
         verify(accommodationRepository).findById(TEST_ACCOMMODATION_ID);
@@ -196,9 +195,9 @@ public class AccommodationServiceTest {
     @Test
     void update_shouldThrowExceptionIfNotFound() {
         when(accommodationRepository.findById(TEST_ACCOMMODATION_ID))
-            .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,
-            () -> accommodationService.update(TEST_ACCOMMODATION_ID, updatedRequestDto));
+                () -> accommodationService.update(TEST_ACCOMMODATION_ID, updatedRequestDto));
 
         verify(accommodationRepository).findById(TEST_ACCOMMODATION_ID);
     }

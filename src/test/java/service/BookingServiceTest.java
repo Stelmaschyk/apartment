@@ -3,7 +3,6 @@ package service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,8 +66,8 @@ public class BookingServiceTest {
         user.setId(TEST_USER_ID);
 
         Accommodation accommodation = new Accommodation()
-            .setId(TEST_ACCOMMODATION_ID)
-            .setDailyRate(BigDecimal.valueOf(100));
+                .setId(TEST_ACCOMMODATION_ID)
+                .setDailyRate(BigDecimal.valueOf(100));
 
         booking = new Booking()
             .setId(TEST_BOOKING_ID)
@@ -96,9 +95,9 @@ public class BookingServiceTest {
     void saveBooking_shouldSaveWithReturningBookingResponseDto() {
         when(bookingMapper.toModel(requestDto)).thenReturn(booking);
         when(userRepository.findById(TEST_USER_ID))
-            .thenReturn(Optional.of(new User().setId(TEST_USER_ID)));
+                .thenReturn(Optional.of(new User().setId(TEST_USER_ID)));
         when(accommodationRepository.findById(TEST_ACCOMMODATION_ID))
-            .thenReturn(Optional.of(new Accommodation().setId(TEST_ACCOMMODATION_ID)));
+                .thenReturn(Optional.of(new Accommodation().setId(TEST_ACCOMMODATION_ID)));
         when(bookingRepository.save(booking)).thenReturn(booking);
         when(bookingMapper.toDto(booking)).thenReturn(responseDto);
 
@@ -106,7 +105,7 @@ public class BookingServiceTest {
 
         assertThat(actual)
             .isNotNull()
-            .isEqualTo(responseDto);
+                .isEqualTo(responseDto);
 
         verify(bookingRepository).save(booking);
     }
@@ -133,7 +132,7 @@ public class BookingServiceTest {
     @Test
     void searchBookings_withValidParams_shouldReturnListOfResponseDtos() {
         BookingSearchParametersDto searchParams =
-            new BookingSearchParametersDto(new String[]{"1"}, new String[]{"CONFIRMED"});
+                new BookingSearchParametersDto(new String[]{"1"}, new String[]{"CONFIRMED"});
         Specification<Booking> specification = mock(Specification.class);
         Pageable pageable = PageRequest.of(0, 10);
         List<Booking> bookingList = List.of(booking);
@@ -148,7 +147,7 @@ public class BookingServiceTest {
         assertThat(result)
             .isNotNull()
             .hasSize(1)
-            .containsExactly(responseDto);
+                .containsExactly(responseDto);
 
         verify(bookingSpecificationBuilder).build(searchParams);
         verify(bookingRepository).findAll(specification, pageable);

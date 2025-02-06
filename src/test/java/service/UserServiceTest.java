@@ -1,6 +1,5 @@
 package service;
 
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -53,11 +52,10 @@ public class UserServiceTest {
 
     @Test
     void registerUser_withValidRegistrationRequestDto_ShouldReturnValidResponseDto() {
-        //Given
         UserRegistrationRequestDto requestDto =
-            TestServiceDataProvider.createValidUserRegistrationRequestDto();
+                TestServiceDataProvider.createValidUserRegistrationRequestDto();
         UserResponseDto responseDto =
-            TestServiceDataProvider.createValidUserResponseDto(TEST_USER_ID);
+                TestServiceDataProvider.createValidUserResponseDto(TEST_USER_ID);
         User user = TestServiceDataProvider.createValidUser();
         Role role = TestServiceDataProvider.createValidUserRole();
 
@@ -67,12 +65,11 @@ public class UserServiceTest {
         when(userRepository.save(user)).thenReturn(user);
         when(userMapper.toDto(user)).thenReturn(responseDto);
 
-        // When
         try {
             UserResponseDto actual = userService.register(requestDto);
             assertThat(actual)
                 .isNotNull()
-                .isEqualTo(responseDto);
+                    .isEqualTo(responseDto);
 
             verify(userRepository).existsByEmail(requestDto.getEmail());
             verify(userMapper).toModel(requestDto);
@@ -84,31 +81,30 @@ public class UserServiceTest {
         }
     }
 
-
     @Test
     void registerUser_withExistingUserEmail_ShouldReturnRegistrationException() {
         UserRegistrationRequestDto requestDto =
-            TestServiceDataProvider.createValidUserRegistrationRequestDto();
+                TestServiceDataProvider.createValidUserRegistrationRequestDto();
 
         when(userRepository.existsByEmail(requestDto.getEmail())).thenReturn(true);
 
         RegistrationException registrationException = assertThrows(
-            RegistrationException.class, () -> userService.register(requestDto));
+                RegistrationException.class, () -> userService.register(requestDto));
 
         String expectedMessage = "Email %s has already registered"
-            .formatted(requestDto.getEmail());
+                .formatted(requestDto.getEmail());
         String actual = registrationException.getMessage();
 
         assertThat(actual)
             .isNotNull()
-            .isEqualTo(expectedMessage);
+                .isEqualTo(expectedMessage);
 
     }
 
     @Test
     void getCurrentUser_withValidUserId_shouldReturnUserResponseDto() {
         UserResponseDto responseDto =
-            TestServiceDataProvider.createValidUserResponseDto(TEST_USER_ID);
+                TestServiceDataProvider.createValidUserResponseDto(TEST_USER_ID);
         User user = TestServiceDataProvider.createValidUser();
 
         when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(user));
@@ -117,7 +113,7 @@ public class UserServiceTest {
         UserResponseDto actual = userService.getCurrentUser(TEST_USER_ID);
         assertThat(actual)
             .isNotNull()
-            .isEqualTo(responseDto);
+                .isEqualTo(responseDto);
     }
 
     @Test
@@ -125,14 +121,14 @@ public class UserServiceTest {
         when(userRepository.findById(INCORRECT_USER_ID)).thenReturn(Optional.empty());
 
         EntityNotFoundException entityNotFoundException = assertThrows(
-            EntityNotFoundException.class, () -> userService.getCurrentUser(INCORRECT_USER_ID));
+                EntityNotFoundException.class, () -> userService.getCurrentUser(INCORRECT_USER_ID));
 
         String expectedMessage = "User with id %s wasn't found".formatted(INCORRECT_USER_ID);
         String actual = entityNotFoundException.getMessage();
 
         assertThat(actual)
             .isNotNull()
-            .isEqualTo(expectedMessage);
+                .isEqualTo(expectedMessage);
 
         verify(userRepository, times(1)).findById(INCORRECT_USER_ID);
         verifyNoMoreInteractions(userRepository);
@@ -165,7 +161,7 @@ public class UserServiceTest {
         User user = TestServiceDataProvider.createValidUser();
         UserUpdateRequestDto updateDto = TestServiceDataProvider.createValidUserUpdateRequestDto();
         UserResponseDto expectedResponse =
-            TestServiceDataProvider.createUpdatedUserResponseDto(TEST_USER_ID);
+                TestServiceDataProvider.createUpdatedUserResponseDto(TEST_USER_ID);
 
         when(userRepository.findById(TEST_USER_ID)).thenReturn(Optional.of(user));
         doNothing().when(userMapper).toUpdateDto(updateDto, user);
@@ -183,6 +179,4 @@ public class UserServiceTest {
         verify(userRepository).save(user);
         verify(userMapper).toDto(user);
     }
-
-
 }
