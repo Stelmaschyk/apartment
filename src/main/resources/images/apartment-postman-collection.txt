@@ -1,0 +1,237 @@
+------------------------------------------------------
+Accommodation Block
+------------------------------------------------------
+……………………………………………………………………………………………………………………………………………….
+POST Create Accommodation
+
+    URL: http://localhost:8081/api/accommodations
+
+    Method: POST
+
+    Request Body:
+
+{
+  "dailyRate": 200.0,
+  "availability": 30,
+  "size": "small",
+  "address": {
+    "country": "Poland",
+    "city": "Krakow",
+    "street": "Main Square",
+    "buildNumber": 25
+  },
+  "amenities": [
+    "wifi",
+    "air conditioning",
+    "kitchen"
+  ]
+} 
+……………………………………………………………………………………………………………………………………………….
+GET Get Accommodation by ID
+
+    URL: http://localhost:8081/api/accommodations/{id}
+
+    Method: GET
+
+    Response:
+
+{
+  "name": "Example Accommodation"
+}
+
+……………………………………………………………………………………………………………………………………………….
+DELETE Delete Accommodation by ID
+
+    URL: http://localhost:8081/api/accommodations/{id}
+
+    Method: DELETE
+
+……………………………………………………………………………………………………………………………………………….
+PUT Update Accommodation by ID
+
+    URL: http://localhost:8081/api/accommodations/{id}
+
+    Method: PUT
+
+    Request Body:
+{
+  "dailyRate": 150.50,
+  "availability": 777,
+  "size": "Large",
+  "address": {
+    "country": "USAA",
+    "city": "New Yorkk",
+    "street": "5th Avenue",
+    "buildNumber": 123
+  }
+}
+
+-------------------------------------------------------
+Authorization Block
+-------------------------------------------------------
+……………………………………………………………………………………………………………………………………………….
+POST Register User
+
+    URL: http://localhost:8081/api/auth/register
+
+    Method: POST
+
+    Request Body:
+
+{
+  "email": "users@gmail.com",
+  "password": "pass123456789",
+  "repeatPassword": "pass123",
+  "firstName": "Admin",
+  "lastName": "Administrator"
+}
+……………………………………………………………………………………………………………………………………………….
+POST Login
+
+    URL: http://localhost:8081/api/auth/login
+
+    Method: POST
+
+    Request Body:
+
+{
+  "email": "users@gmail.com",
+  "password": "pass123456789"
+}
+
+-------------------------------------------------------
+User Block
+-------------------------------------------------------
+……………………………………………………………………………………………………………………………………………….
+GET Get Current User
+
+    URL: http://localhost:8081/api/users/me
+
+    Method: GET
+……………………………………………………………………………………………………………………………………………….
+PUT Update User Role by ID
+
+    URL: http://localhost:8081/api/users/{id}/role
+
+    Method: PUT
+
+    Request Body:
+
+{
+  "roles": ["ROLE_ADMIN", "ROLE_USER"]
+}
+……………………………………………………………………………………………………………………………………………….
+PATCH Update User Information by ID
+
+    URL: http://localhost:8081/api/users/me
+
+    Method: PATCH
+
+    Request Body:
+
+{
+  "firstName": "AAAdmin",
+  "lastName": "AAAdministrator"
+}
+
+------------------------------------------------------
+Booking Block
+------------------------------------------------------
+……………………………………………………………………………………………………………………………………………….
+POST Create Booking
+
+    URL: http://localhost:8081/api/bookings
+
+    Method: POST
+
+    Request Body:
+{
+  "checkInDate": "2025-01-15",
+  "checkOutDate": "2025-01-20",
+  "accommodationId": 1
+}
+……………………………………………………………………………………………………………………………………………….
+GET Get All My Bookings
+
+    URL: http://localhost:8081/api/bookings/me
+
+    Method: GET
+……………………………………………………………………………………………………………………………………………….
+GET Get Booking by ID
+
+    URL: http://localhost:8081/api/bookings/{id}
+
+    Method: GET
+……………………………………………………………………………………………………………………………………………….
+GET Search Booking by User ID and Status
+
+    URL: http://localhost:8081/api/bookings/search?user_id={user_id}&status={status}
+
+    Method: GET
+
+    Query Parameters:
+
+        user_id: 1
+
+        status: PENDING
+……………………………………………………………………………………………………………………………………………….
+PUT Update Booking by ID
+
+    URL: http://localhost:8081/api/bookings/{id}
+
+    Method: PUT
+
+    Request Body:
+
+{
+  "checkInDate": "2025-09-29",
+  "checkOutDate": "2025-09-30",
+  "accommodationId": 2
+}
+
+------------------------------------------------------
+Payment Block
+------------------------------------------------------
+……………………………………………………………………………………………………………………………………………….
+POST Create Payment
+
+    URL: http://localhost:8081/api/payments
+
+    Method: POST
+
+    Request Body:
+{
+  "bookingId": 1
+}
+……………………………………………………………………………………………………………………………………………….
+GET Get Payments by User ID
+
+    URL: http://localhost:8081/api/payments?user_id={user_id}
+
+    Method: GET
+
+    Query Parameters:
+
+        user_id: 1
+……………………………………………………………………………………………………………………………………………….
+GET Get Confirmed Payments by Session ID
+
+    URL: http://localhost:8081/api/payments/success?session_id={session_id}
+
+    Method: GET
+
+    Query Parameters:
+
+        session_id: cs_test_a1ADMDWWeKAzWJ6R
+……………………………………………………………………………………………………………………………………………….
+GET Get Canceled Payments by Session ID
+
+    URL: http://localhost:8081/api/payments/cancel?session_id={session_id}
+
+    Method: GET
+
+    Query Parameters:
+
+        session_id: cs_test_a1vd3EDsWuVwlAd1d90IFBaIRrRiSq9
+……………………………………………………………………………………………………………………………………………….
+
