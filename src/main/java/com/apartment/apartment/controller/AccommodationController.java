@@ -2,13 +2,16 @@ package com.apartment.apartment.controller;
 
 import com.apartment.apartment.dto.accommodation.AccommodationRequestDto;
 import com.apartment.apartment.dto.accommodation.AccommodationResponseDto;
+import com.apartment.apartment.model.Accommodation;
 import com.apartment.apartment.service.accommodation.AccommodationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,5 +69,14 @@ public class AccommodationController {
     @Operation(summary = "Delete accommodation by id")
     public void deleteAccommodationById(@PathVariable Long id) {
         accommodationService.deleteById(id);
+    }
+
+    @GetMapping("/types")
+    @Operation(summary = "Get AccomodationType list")
+    public ResponseEntity<List<String>> getAccommodationTypes() {
+        List<String> types = Arrays.stream(Accommodation.AccommodationType.values())
+                .map(Enum::name)
+                .toList();
+        return ResponseEntity.ok(types);
     }
 }

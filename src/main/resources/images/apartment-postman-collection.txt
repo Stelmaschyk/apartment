@@ -14,6 +14,7 @@ POST Create Accommodation
   "dailyRate": 200.0,
   "availability": 30,
   "size": "small",
+  "type": "HOUSE",
   "address": {
     "country": "Poland",
     "city": "Krakow",
