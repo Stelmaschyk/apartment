@@ -67,6 +67,24 @@ PUT Update Accommodation by ID
   }
 }
 
+
+GET Get AccommodationType list
+
+    URL: http://localhost:8081/api/accommodations/types
+
+    Method: GET
+
+    Response:
+
+{
+  [
+      "HOUSE",
+      "GUESTHOUSE",
+      "APARTMENT",
+      "GLAMPING"
+  ]
+}
+
 -------------------------------------------------------
 Authorization Block
 -------------------------------------------------------

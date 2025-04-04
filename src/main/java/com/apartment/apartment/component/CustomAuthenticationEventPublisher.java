@@ -13,13 +13,13 @@ public class CustomAuthenticationEventPublisher implements AuthenticationEventPu
 
     @Override
     public void publishAuthenticationSuccess(Authentication authentication) {
-        log.info("✅ Успішна автентифікація: " + authentication.getName());
+        log.info("✅ Successfully authenticated: " + authentication.getName());
     }
 
     @Override
     public void publishAuthenticationFailure(AuthenticationException exception,
                                              Authentication authentication) {
-        log.warning("❌ Неуспішна автентифікація для " + authentication.getName()
+        log.warning("❌ Authentication failed for " + authentication.getName()
                 + ": " + exception.getMessage());
     }
 }
