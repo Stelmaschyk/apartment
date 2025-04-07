@@ -14,6 +14,7 @@ POST Create Accommodation
   "dailyRate": 200.0,
   "availability": 30,
   "size": "small",
+  "type": "HOUSE",
   "address": {
     "country": "Poland",
     "city": "Krakow",
@@ -64,6 +65,24 @@ PUT Update Accommodation by ID
     "street": "5th Avenue",
     "buildNumber": 123
   }
+}
+
+
+GET Get AccommodationType list
+
+    URL: http://localhost:8081/api/accommodations/types
+
+    Method: GET
+
+    Response:
+
+{
+  [
+      "HOUSE",
+      "GUESTHOUSE",
+      "APARTMENT",
+      "GLAMPING"
+  ]
 }
 
 -------------------------------------------------------
